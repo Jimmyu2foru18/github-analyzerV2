@@ -39,24 +39,11 @@ pip install -r requirements.txt
 ## Configuration
 
 Required environment variables:
-```env
+```bash
 OPENAI_API_KEY= openai_api_key
 GITHUB_API_KEY= github_api_key
 ```
 
-Optional settings:
-```env
-# Cache Settings
-CACHE_ENABLED=true
-CACHE_TTL=3600
-CACHE_DIR=.cache
-
-# Build Settings
-BUILD_DOWNLOAD_DIR=downloads
-MAX_RESULTS=5
-MIN_STARS=100
-BUILD_TIMEOUT=300
-```
 
 ## Usage
 
