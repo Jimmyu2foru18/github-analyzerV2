@@ -1,7 +1,6 @@
 """
 Chain of Thought Component
 -------------------------
-
 This component implements double chain of thought reasoning for query 
 using DSPy.
 """
