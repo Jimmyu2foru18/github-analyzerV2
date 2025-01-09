@@ -1,7 +1,6 @@
 """
 Build///Automation Component
 -------------------------
-
 This part does the repository build processes
 - Repository downloading
 - Build system detection
