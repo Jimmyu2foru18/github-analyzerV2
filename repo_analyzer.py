@@ -1,7 +1,6 @@
 """
 Repository Analyzer Component
 ---------------------------
-
 This handles GitHub repository searching, analysis, and scoring.
 It analyzes repository content, 
 README files, 
