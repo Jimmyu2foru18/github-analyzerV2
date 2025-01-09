@@ -1,9 +1,8 @@
 """
 Configuration Management
 -----------------------
-
-Handles configuration loading from environment variables and provides
-type-safe configuration objects with validation.
+Handles configuration loading from environment variables.
+provides configuration objects and validation.
 """
 
 import os
@@ -31,9 +30,9 @@ class APIConfig:
         github_key = os.getenv('GITHUB_API_KEY')
         
         if not openai_key:
-            raise ConfigError("OPENAI_API_KEY environment variable is required")
+            raise ConfigError("OPENAI_API_KEY")
         if not github_key:
-            raise ConfigError("GITHUB_API_KEY environment variable is required")
+            raise ConfigError("GITHUB_API_KEY")
             
         return cls(
             openai_api_key=openai_key,
@@ -126,7 +125,7 @@ class Config:
             ConfigError: If required configuration is missing or invalid
         """
         try:
-            # Load environment variables from file if provided
+            # Load environment variables
             if env_file:
                 if not os.path.exists(env_file):
                     raise ConfigError(f"Environment file not found: {env_file}")
@@ -165,7 +164,7 @@ class Config:
                 'format': self.logging.format
             }
             
-            # Add file handler if log file is specified
+            # Add file handler
             if self.logging.file:
                 log_dir = os.path.dirname(self.logging.file)
                 if log_dir:
@@ -185,26 +184,24 @@ class Config:
             ConfigError: If configuration is invalid
         """
         try:
-            # Validate API configuration
+            # Validate API
             if not self.api.openai_api_key or not self.api.github_api_key:
                 raise ConfigError("API keys are required")
             
-            # Validate build configuration
             if self.build.max_results < 1:
                 raise ConfigError("max_results must be positive")
             if self.build.min_stars < 0:
                 raise ConfigError("min_stars cannot be negative")
             if self.build.timeout < 0:
                 raise ConfigError("timeout cannot be negative")
-            
-            # Validate cache configuration
+
             if self.cache.enabled:
                 if self.cache.ttl < 0:
                     raise ConfigError("cache_ttl cannot be negative")
                 if self.cache.max_size_mb < 1:
                     raise ConfigError("cache_max_size_mb must be positive")
             
-            # Create necessary directories
+            # Create directories
             os.makedirs(self.build.base_download_dir, exist_ok=True)
             if self.cache.enabled:
                 os.makedirs(self.cache.directory, exist_ok=True)
