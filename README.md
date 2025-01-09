@@ -40,8 +40,8 @@ pip install -r requirements.txt
 
 Required environment variables:
 ```env
-OPENAI_API_KEY=your_openai_api_key
-GITHUB_API_KEY=your_github_api_key
+OPENAI_API_KEY= openai_api_key
+GITHUB_API_KEY= github_api_key
 ```
 
 Optional settings:
