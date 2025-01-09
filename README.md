@@ -63,12 +63,6 @@ BUILD_TIMEOUT=300
 ```bash
 # Run the interactive analyzer
 python -m github_analyzer
-
-# Or use as a library
-from main_analyzer import GitHubAnalyzer
-
-analyzer = GitHubAnalyzer()
-results = await analyzer.search_and_analyze("machine learning framework python")
 ```
 
 ## Project Structure
