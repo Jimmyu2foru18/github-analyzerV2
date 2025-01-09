@@ -1,8 +1,8 @@
 """
-Build Automation Component
+Build///Automation Component
 -------------------------
 
-This component handles repository build processes, including:
+This part does the repository build processes
 - Repository downloading
 - Build system detection
 - Dependency analysis
@@ -27,7 +27,7 @@ from exceptions import BuildError
 logger = logging.getLogger(__name__)
 
 class BuildAutomation:
-    """Handles repository build automation."""
+    """Handles repository build and automation."""
     
     def __init__(self, config: Config):
         """Initialize build automation."""
@@ -118,7 +118,7 @@ class BuildAutomation:
                 
         except subprocess.CalledProcessError as e:
             logger.error(f"Build execution failed: {e}")
-            # Implement a fallback mechanism or retry logic here
+            # Implements the retry logic here
             return await self._handle_build_failure(repo_path, e)
     
     async def _detect_primary_language(self, repo_path: str) -> str:
@@ -189,15 +189,15 @@ class BuildAutomation:
             return await analyzer(repo_path)
         return []
     
-    # Language-specific build handlers
+    # Language-specific
     async def _handle_python_build(self, repo_path: str, instructions: BuildInstructions) -> bool:
         """Handle Python project build."""
         try:
-            # Setup virtual environment
+            # Setup vm
             venv_path = os.path.join(repo_path, '.venv')
             subprocess.run(['python', '-m', 'venv', venv_path], check=True)
             
-            # Install dependencies
+            # Install dependents
             pip = os.path.join(venv_path, 'bin', 'pip')
             for cmd in instructions.build_commands:
                 subprocess.run([pip] + cmd.split(), check=True)
@@ -210,10 +210,10 @@ class BuildAutomation:
     async def _handle_javascript_build(self, repo_path: str, instructions: BuildInstructions) -> bool:
         """Handle JavaScript/TypeScript project build."""
         try:
-            # Install dependencies
+            # Install dependents
             subprocess.run(['npm', 'install'], cwd=repo_path, check=True)
             
-            # Execute build commands
+            # Execute build
             for cmd in instructions.build_commands:
                 subprocess.run(cmd.split(), cwd=repo_path, check=True)
             
@@ -223,9 +223,7 @@ class BuildAutomation:
             logger.error(f"JavaScript build failed: {e}")
             return False
     
-    # Add other language-specific handlers here...
-    
-    # Dependency analysis methods
+    # analysis methods
     async def _analyze_python_dependencies(self, repo_path: str) -> List[str]:
         """Analyze Python project dependencies."""
         dependencies = []
@@ -241,11 +239,10 @@ class BuildAutomation:
             setup_file = os.path.join(repo_path, 'setup.py')
             if os.path.exists(setup_file):
                 # Parse setup.py for install_requires
-                # This is a simplified version
                 with open(setup_file) as f:
                     content = f.read()
                     if 'install_requires' in content:
-                        # Extract dependencies (simplified)
+                        # Extracts
                         pass
             
             return dependencies
@@ -259,7 +256,6 @@ class BuildAutomation:
         dependencies = []
         
         try:
-            # Parse package.json
             package_file = os.path.join(repo_path, 'package.json')
             if os.path.exists(package_file):
                 with open(package_file) as f:
@@ -304,7 +300,6 @@ class BuildAutomation:
         dependencies = []
         
         try:
-            # Parse Cargo.toml
             cargo_toml = os.path.join(repo_path, 'Cargo.toml')
             if os.path.exists(cargo_toml):
                 with open(cargo_toml) as f:
@@ -325,10 +320,10 @@ class BuildAutomation:
     async def _handle_build_failure(self, repo_path: str, error: Exception) -> bool:
         """Handle build failures with retry logic."""
         try:
-            # Clean build artifacts
+            # Clean build
             await self._clean_build_artifacts(repo_path)
             
-            # Retry build with different configuration
+            # Retry build
             modified_instructions = await self._modify_build_instructions(repo_path)
             return await self.execute_build(repo_path, modified_instructions)
             
@@ -339,7 +334,7 @@ class BuildAutomation:
     async def _clean_build_artifacts(self, repo_path: str):
         """Clean build artifacts before retry."""
         try:
-            # Common build directories to clean
+            # Common builds to try
             build_dirs = ['build', 'dist', 'target', 'node_modules', '__pycache__']
             for dir_name in build_dirs:
                 dir_path = os.path.join(repo_path, dir_name)
@@ -355,15 +350,15 @@ class BuildAutomation:
         This method analyzes build failures and adjusts instructions accordingly.
         """
         try:
-            # Detect language and build system
+            # Detect language the builds it 
             language = await self._detect_primary_language(repo_path)
             build_system = await self._detect_build_system(repo_path, language)
             
-            # Get dependencies with relaxed version constraints
+            # Get info with constraints
             dependencies = await self._analyze_dependencies(repo_path, language)
             dependencies = [d.replace('==', '>=') for d in dependencies]
             
-            # Create modified build steps
+            # Create the process with modified build steps
             setup_steps = [
                 "Clean build artifacts",
                 "Update package manager",
@@ -388,7 +383,7 @@ class BuildAutomation:
                 dependencies=dependencies,
                 setup_steps=setup_steps,
                 build_commands=build_commands,
-                test_commands=[]  # Skip tests on retry
+                test_commands=[]  # Skip test
             )
             
         except Exception as e:
@@ -398,13 +393,13 @@ class BuildAutomation:
     async def _setup_environment(self, repo_path: str, instructions: BuildInstructions):
         """Setup build environment."""
         try:
-            # Create virtual environment for Python
+            # Create vm -python 
             if instructions.language.lower() == 'python':
                 venv_path = os.path.join(repo_path, '.venv')
                 if not os.path.exists(venv_path):
                     subprocess.run(['python', '-m', 'venv', venv_path], check=True)
             
-            # Setup Node.js environment
+            # Setup Node.js
             elif instructions.language.lower() in ['javascript', 'typescript']:
                 if not os.path.exists(os.path.join(repo_path, 'node_modules')):
                     subprocess.run(['npm', 'install'], cwd=repo_path, check=True)
