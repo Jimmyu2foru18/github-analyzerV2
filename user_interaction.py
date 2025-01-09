@@ -1,4 +1,4 @@
-"""User interaction handling component."""
+"""User interaction component."""
 
 import logging
 from typing import List
@@ -10,11 +10,11 @@ logger = logging.getLogger(__name__)
 console = Console()
 
 class UserInteraction:
-    """Handles user interaction and display."""
+    """Handles user interaction."""
     
     async def get_search_query(self) -> str:
         """Get search query from user."""
-        console.print("\n[bold blue]Enter your search query:[/]")
+        console.print("\nEnter your search query:")
         return console.input("> ").strip()
     
     async def present_options(self, repositories: List[Repository]) -> UserChoice:
@@ -39,7 +39,7 @@ class UserInteraction:
             )
         
         console.print(table)
-        console.print("\n[bold]Options:[/]")
+        console.print("\nOptions:")
         console.print("1-N: Download repository")
         console.print("r: Refine search")
         console.print("q: Quit")
