@@ -59,4 +59,4 @@ class UserInteraction:
                         repository=repositories[idx]
                     )
             
-            console.print("[red]Invalid choice. Please try again.[/]") 
+            console.print("Invalid choice. Please try again.") 
