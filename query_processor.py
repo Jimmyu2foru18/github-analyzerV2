@@ -2,8 +2,8 @@
 Chain of Thought Component
 -------------------------
 
-This component implements double chain of thought reasoning for query analysis
-and refinement using DSPy.
+This component implements double chain of thought reasoning for query 
+using DSPy.
 """
 
 import logging
