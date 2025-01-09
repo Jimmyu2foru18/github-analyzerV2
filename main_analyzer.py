@@ -27,5 +27,3 @@ class GitHubAnalyzer:
         self.config = config or Config.from_env()
         self.cache_manager = CacheManager()
         self.setup_components()
-    
-    # ... rest of the implementation ... 
