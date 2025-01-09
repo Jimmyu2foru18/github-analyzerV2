@@ -2,8 +2,10 @@
 Repository Analyzer Component
 ---------------------------
 
-This component handles GitHub repository searching, analysis, and relevance scoring.
-It analyzes repository content, README files, and metadata to determine relevance
+This handles GitHub repository searching, analysis, and scoring.
+It analyzes repository content, 
+README files, 
+and metadata to determine relevance
 to the user's search query.
 """
 
@@ -55,7 +57,7 @@ class RepositoryAnalyzer:
     
     async def search(self, criteria: SearchCriteria) -> List[Repository]:
         """
-        Search for repositories matching criteria.
+        Search for repositories matching.
         
         Args:
             criteria: Search criteria
@@ -161,7 +163,7 @@ class RepositoryAnalyzer:
                 logger.warning(f"No README found for {repo.full_name}")
                 return {}
             
-            # Analyze with OpenAI
+            # Read the content with OpenAI
             response = await self.openai_client.chat.completions.create(
                 model=self.config.api.model_name,
                 messages=[
@@ -187,7 +189,7 @@ class RepositoryAnalyzer:
                 ]
             )
             
-            # Parse and return analysis
+            # Parse and return info...
             import json
             return json.loads(response.choices[0].message.content)
             
@@ -198,12 +200,12 @@ class RepositoryAnalyzer:
     async def analyze_code_similarity(self, repository: Repository) -> float:
         """Analyze code similarity within the repository."""
         try:
-            # Clone repository to temporary directory
+            # Clone repository
             with tempfile.TemporaryDirectory() as temp_dir:
                 repo_path = os.path.join(temp_dir, repository.name)
                 Repo.clone_from(repository.url, repo_path)
                 
-                # Analyze code similarity using tokenization
+                # read the code that is similar using tokenization
                 similarity_score = await self._calculate_similarity_score(repo_path)
                 
                 return similarity_score
@@ -218,7 +220,7 @@ class RepositoryAnalyzer:
             import tokenize
             from collections import defaultdict
             
-            # Store token frequencies
+            # Store token
             token_frequencies = defaultdict(int)
             duplicate_lines = 0
             total_lines = 0
@@ -228,7 +230,7 @@ class RepositoryAnalyzer:
             for ext in ['.py', '.js', '.java', '.go', '.rs']:
                 source_files.extend(Path(repo_path).rglob(f'*{ext}'))
             
-            # Analyze each file
+            # read each file
             for file_path in source_files:
                 try:
                     with tokenize.open(file_path) as f:
@@ -237,13 +239,13 @@ class RepositoryAnalyzer:
                         # Count lines
                         total_lines += sum(1 for _ in open(file_path))
                         
-                        # Create token sequences for similarity checking
+                        # Create token for similarity of repos
                         token_sequences = [
                             tuple(t.string for t in tokens[i:i+5])
                             for i in range(len(tokens)-4)
                         ]
                         
-                        # Count duplicate sequences
+                        # Count the duplicate 
                         for sequence in token_sequences:
                             if token_frequencies[sequence] > 0:
                                 duplicate_lines += 1
@@ -272,18 +274,18 @@ class RepositoryAnalyzer:
     ) -> float:
         """Calculate overall repository relevance score."""
         try:
-            # Base score from stars (normalized to 0-1)
+            # Base score from stars
             star_score = min(repository.stars / 10000, 1.0)
             
-            # README completeness score
+            # socre the README
             readme_score = len(readme_analysis.get("features", [])) / 10
             readme_score += len(readme_analysis.get("technologies", [])) / 10
             readme_score = min(readme_score, 1.0)
             
-            # Code quality score (inverse of similarity)
+            # score for code quality
             code_score = 1.0 - similarity_score
             
-            # Calculate weighted average
+            # Calculate averages
             weights = {
                 "stars": 0.4,
                 "readme": 0.4,
@@ -299,6 +301,6 @@ class RepositoryAnalyzer:
             return round(relevance_score, 3)
             
         except Exception as e:
-            logger.error(f"Failed to calculate relevance score: {e}")
+            logger.error(f"Failed to calculate score: {e}")
             return 0.0
  
