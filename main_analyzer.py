@@ -1,8 +1,7 @@
 """
-Main Analyzer Component
+Main Analyzer
 ----------------------
-
-Main coordination component for GitHub repository analysis.
+Main component for GitHub repository search.
 """
 
 import logging
@@ -21,7 +20,7 @@ from user_interaction import UserInteraction
 logger = logging.getLogger(__name__)
 
 class GitHubAnalyzer:
-    """Main class coordinating repository analysis and build processes."""
+    """Main class for repository analysis and build processes."""
     
     def __init__(self, config: Optional[Config] = None):
         self.config = config or Config.from_env()
