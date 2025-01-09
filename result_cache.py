@@ -1,6 +1,6 @@
 """
-Cache management for GitHub Analyzer.
-Handles caching of analysis results and repository data.
+Cache management for GitHub searches.
+Handles caching of results and repository data.
 """
 
 import os
@@ -14,7 +14,7 @@ from exceptions import CacheError
 from models import Repository
 
 class CacheManager:
-    """Manages caching of repository analysis results."""
+    """Manages caching of repository results."""
     
     def __init__(self, cache_dir: str = ".cache", cache_ttl: int = 3600):
         """
